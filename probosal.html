@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض شراكة استراتيجية - رفيق التميز</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-dark: #0D1B2A;
+            --secondary-dark: #1B263B;
+            --primary-light: #F0F2F5;
+            --accent-gold: #E0B84C;
+            --accent-gold-light: #f7d47e;
+            --text-light: #E0E1DD;
+            --text-dark: #333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background-color: var(--primary-light);
+            text-align: right;
+            overflow-x: hidden;
+        }
+
+        /* --- Navigation Bar --- */
+        .main-nav {
+            position: sticky;
+            top: 0;
+            background-color: rgba(13, 27, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-gold);
+            transition: width 0.3s ease-out;
+        }
+        .nav-links a:hover { color: var(--accent-gold); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- General Slide Styles --- */
+        .proposal-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .slide {
+            padding: 80px 40px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .slide-content {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .slide-content.visible { opacity: 1; transform: translateY(0); }
+
+        h1, h2, h3, h4 { font-weight: 900; margin-bottom: 20px; }
+        h1 { font-size: 3rem; color: #FFF; }
+        h2 { font-size: 2.5rem; text-align: center; color: var(--primary-dark); }
+        h3 { font-size: 1.6rem; }
+        p { font-size: 1.1rem; margin-bottom: 15px; max-width: 800px; margin-right: auto; margin-left: auto; }
+
+        /* --- Specific Slide Styles --- */
+        .hero-slide {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            text-align: center;
+        }
+        .hero-slide .subtitle { font-size: 1.3rem; color: var(--text-light); opacity: 0.8; }
+
+        .light-slide { background-color: #FFF; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+        .dark-slide { background-color: var(--secondary-dark); color: var(--text-light); }
+        .dark-slide h2, .dark-slide h3 { color: #FFF; }
+
+        /* Services Section with detailed descriptions */
+        .service-item {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .service-item:nth-child(odd) { flex-direction: row-reverse; }
+        .service-icon {
+            font-size: 5rem;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+        }
+        .service-description h3 { color: var(--accent-gold); }
+        .service-description p { text-align: justify; }
+
+        /* Staggered Animation for children */
+        .stagger-children > * {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .visible .stagger-children > * { opacity: 1; transform: translateY(0); }
+        .visible .stagger-children > *:nth-child(1) { transition-delay: 0.1s; }
+        .visible .stagger-children > *:nth-child(2) { transition-delay: 0.2s; }
+        .visible .stagger-children > *:nth-child(3) { transition-delay: 0.3s; }
+
+        /* Pricing Table */
+        .pricing-table-wrapper {
+            overflow-x: auto;
+            margin-top: 40px;
+            padding-bottom: 10px;
+        }
+        .pricing-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        .pricing-table thead {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+        }
+        .pricing-table th { font-size: 1.1rem; }
+        .pricing-table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+        .pricing-table .package-name {
+            text-align: right;
+            font-weight: 700;
+        }
+        .pricing-table .highlight-col {
+            background-color: #fffbeb;
+            border: 2px solid var(--accent-gold);
+        }
+        .pricing-table .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        .pricing-table .discount {
+            font-size: 0.9rem;
+            color: #16a085;
+            font-weight: 700;
+        }
+        .pricing-table .best-value {
+            color: var(--accent-gold);
+            font-weight: 900;
+            display: block;
+        }
+
+        /* CTA & Footer */
+        .cta-slide {
+            background-image: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('https://images.unsplash.com/photo-1556740738-b6a63e2775d2?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            color: var(--text-light);
+            text-align: center;
+        }
+        .cta-slide h2, .cta-slide h3 { color: #FFF; }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: var(--primary-dark);
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: var(--accent-gold-light);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(224, 184, 76, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            .slide { padding: 50px 20px; }
+            .service-item, .service-item:nth-child(odd) {
+                flex-direction: column;
+                text-align: center;
+            }
+            .service-description p { text-align: center; }
+            .nav-links { display: none; } /* Hide nav links on mobile for simplicity */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">رفيق التميز</div>
+            <ul class="nav-links">
+                <li><a href="#services">خدماتنا</a></li>
+                <li><a href="#pricing">الاستثمار</a></li>
+                <li><a href="#contact">لنبدأ معًا</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="proposal-container">
+
+        <!-- الشريحة 1: الغلاف -->
+        <header class="slide hero-slide">
+            <div class="slide-content">
+                <h1>شريككم في صياغة قصص النجاح الرقمي</h1>
+                <p class="subtitle">نحن لا نقدم خدمات، بل نبني شراكات استراتيجية تضمن نموكم وتميزكم.</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- الشريحة 2: خدماتنا بالتفصيل -->
+            <section id="services" class="slide dark-slide">
+                <div class="slide-content">
+                    <h2>حلول متكاملة لنمو لا يتوقف</h2>
+                    <div class="stagger-children">
+                        <div class="service-item">
+                            <div class="service-icon">💬</div>
+                            <div class="service-description">
+                                <h3>التواصل الاجتماعي (Social Media)</h3>
+                                <p>نحن نصنع أكثر من مجرد منشورات؛ نحن نبني مجتمعات. من خلال استراتيجية محتوى مدروسة، نقوم بتحويل منصاتكم إلى مساحات حيوية للتفاعل وبناء الولاء. نغوص في أعماق علامتكم التجارية لنروي قصتها بأسلوب إبداعي وجذاب، ونصمم حملات مبتكرة تثير الحوار وتصل إلى قلوب وعقول جمهوركم، محولين المتابعين إلى سفراء حقيقيين لعلامتكم.</p>
+                            </div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">🎯</div>
+                            <div class="service-description">
+                                <h3>الإعلانات المدفوعة (Media Buying)</h3>
+                                <p>في عالم الإعلانات المزدحم، نحن نضمن أن كل ريال تنفقونه يعود عليكم بأقصى قيمة. عبر تحليل دقيق للبيانات واستهداف ليزري للجمهور، نصمم وندير حملات إعلانية ذكية عبر مختلف المنصات (Meta, Google, TikTok). هدفنا ليس مجرد جذب النقرات، بل تحقيق تحويلات حقيقية وزيادة ملموسة في مبيعاتكم وأرباحكم.</p>
+                            </div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">📈</div>
+                            <div class="service-description">
+                                <h3>تحسين محركات البحث (SEO)</h3>
+                                <p>نحن لا ننتظر العملاء ليجدوكم بالصدفة، بل نضعكم مباشرة أمام أعينهم عندما يبحثون عنكم. من خلال استراتيجية SEO شاملة، نعمل على تحسين موقعكم تقنيًا، وصناعة محتوى قيم يتصدر نتائج البحث، وبناء شبكة من الروابط القوية التي تعزز سلطة موقعكم. إنها استراتيجية طويلة الأمد لبناء أصل رقمي لا يقدر بثمن، يضمن لكم تدفقًا مستمرًا من العملاء المؤهلين.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- الشريحة 3: الاستثمار والأسعار -->
+            <section id="pricing" class="slide light-slide">
+                <div class="slide-content">
+                    <h2>الاستثمار الذكي في نموكم</h2>
+                    <p>نموذجنا مصمم ليكافئ الشراكات الاستراتيجية. التزامكم الطويل يعني توفيراً أكبر ونتائج أعمق وأكثر استدامة.</p>
+                    <div class="pricing-table-wrapper">
+                        <table class="pricing-table">
+                            <thead>
+                                <tr>
+                                    <th>الباقة / مدة الشراكة</th>
+                                    <th>الدفع الشهري (مرونة)</th>
+                                    <th>ربع سنوي (خصم 10%)</th>
+                                    <th>نصف سنوي (خصم 15%)</th>
+                                    <th class="highlight-col">سنوي (أفضل قيمة)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="package-name">الخدمات الثنائية <br><small>(سوشيال+سيو) أو (سوشيال+إعلانات)</small></td>
+                                    <td><span class="price">1,700</span> ريال/شهر</td>
+                                    <td><span class="price">1,530</span> ريال/شهر<br><span class="discount">توفير 10%</span></td>
+                                    <td><span class="price">1,445</span> ريال/شهر<br><span class="discount">توفير 15%</span></td>
+                                    <td class="highlight-col">
+                                        <span class="best-value">خصم 25%</span>
+                                        <span class="price">1,275</span> ريال/شهر
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="package-name">باقة الهيمنة المتكاملة <br><small>(جميع الخدمات)</small></td>
+                                    <td><span class="price">2,500</span> ريال/شهر</td>
+                                    <td><span class="price">2,250</span> ريال/شهر<br><span class="discount">توفير 10%</span></td>
+                                    <td><span class="price">2,125</span> ريال/شهر<br><span class="discount">توفير 15%</span></td>
+                                    <td class="highlight-col">
+                                        <span class="best-value">خصم 25%</span>
+                                        <span class="price">1,875</span> ريال/شهر
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- الشريحة 4: الختام والدعوة -->
+            <section id="contact" class="slide cta-slide">
+                <div class="slide-content">
+                    <h2>هل أنتم مستعدون للتميز؟</h2>
+                    <p>دعونا نتجاوز حدود المألوف ونبدأ في صياغة مستقبل رقمي مبهر لعلامتكم التجارية.</p>
+                    <a href="mailto:[بريدك الإلكتروني]?subject=استفسار بخصوص شراكة استراتيجية مع رفيق التميز" class="cta-button">لنبدأ الحديث الآن</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // JavaScript for Fade-in animation on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.slide-content').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Smooth scrolling for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
